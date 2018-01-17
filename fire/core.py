@@ -651,7 +651,15 @@ def _CallCallable(fn, args):
   parse = _MakeParseFn(fn)
   (varargs, kwargs), consumed_args, remaining_args, capacity = parse(args)
 
-  result = fn(*varargs, **kwargs)
+  if six.PY34:
+    import asyncio
+    if asyncio.iscoroutinefunction(fn):
+      loop = asyncio.get_event_loop()
+      result = loop.run_until_complete(fn(*varargs, **kwargs))
+    else:
+      result = fn(*varargs, **kwargs)
+  else:
+    result = fn(*varargs, **kwargs)
   return result, consumed_args, remaining_args, capacity
 
 
