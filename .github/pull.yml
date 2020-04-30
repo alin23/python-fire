@@ -1,0 +1,12 @@
+version: "1"
+rules:
+  - base: master
+    upstream: google:master
+    mergeMethod: rebase
+    mergeUnstable: false
+    assignees:
+      - alin23
+    reviewers:
+      - alin23
+    conflictReviewers:
+      - alin23
